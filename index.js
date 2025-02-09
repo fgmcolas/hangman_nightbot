@@ -9,7 +9,7 @@ const words = wordsData.words;
 
 let secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
 let revealedLetters = secretWord.split("").map(char =>
-    (char === "'" || char === "-") ? char : "_"
+    (char === " ") ? "&nbsp;&nbsp;&nbsp;" : (char === "'" || char === "-") ? char : "_"
 );
 
 let attemptsLeft = 6;
@@ -65,7 +65,7 @@ app.get("/pendu", (req, res) => {
 function resetGame() {
     secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
     revealedLetters = secretWord.split("").map(char =>
-        (char === "'" || char === "-") ? char : "_"
+        (char === " ") ? "&nbsp;&nbsp;&nbsp;" : (char === "'" || char === "-") ? char : "_"
     );
     attemptsLeft = 6;
     guessedLetters.clear();
