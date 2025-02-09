@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 
 app.get("/pendu", (req, res) => {
     const guess = req.query.letter?.toUpperCase();
+    const user = req.query.user || "utilisateur";
 
     if (!guess) {
         return res.send("❌ Donne une lettre ou un mot valide !");
@@ -32,7 +33,7 @@ app.get("/pendu", (req, res) => {
             attemptsLeft--;
         }
     } else {
-        if (!/[a-z]/.test(guess) || guessedLetters.has(guess)) {
+        if (!/[A-Z]/.test(guess) || guessedLetters.has(guess)) {
             return res.send(`🔄 Lettre invalide ou déjà utilisée : ${revealedLetters.join(" ")}`);
         }
         guessedLetters.add(guess);
@@ -60,7 +61,7 @@ app.get("/pendu", (req, res) => {
 });
 
 function resetGame() {
-    secretWord = words[Math.floor(Math.random() * words.length)];
+    secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
     revealedLetters = Array(secretWord.length).fill("_");
     attemptsLeft = 6;
     guessedLetters.clear();
