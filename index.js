@@ -17,30 +17,42 @@ app.get("/", (req, res) => {
 });
 
 app.get("/pendu", (req, res) => {
-    const letter = req.query.letter?.toLowerCase();
+    const guess = req.query.letter?.toLowerCase();
+    const user = req.query.user || "utilisateur";
 
-    if (!letter || letter.length !== 1 || !/[a-z]/.test(letter)) {
-        return res.send("❌ Donne une seule lettre valide !");
+    if (!guess) {
+        return res.send("❌ Donne une lettre ou un mot valide !");
     }
 
-    if (guessedLetters.has(letter)) {
-        return res.send(`🔄 Lettre déjà utilisée : ${revealedLetters.join(" ")}`);
-    }
-
-    guessedLetters.add(letter);
-
-    if (secretWord.includes(letter)) {
-        for (let i = 0; i < secretWord.length; i++) {
-            if (secretWord[i] === letter) revealedLetters[i] = letter;
+    // Vérifier si le joueur devine un mot entier
+    if (guess.length > 1) {
+        if (guess === secretWord) {
+            let wordFound = secretWord;
+            resetGame();
+            return res.send(`🎉 Bravo <@${user}> ! Le mot était **${wordFound}**. Un nouveau mot a été choisi.`);
+        } else {
+            attemptsLeft--;
         }
     } else {
-        attemptsLeft--;
+        if (!/[a-z]/.test(guess) || guessedLetters.has(guess)) {
+            return res.send(`🔄 Lettre invalide ou déjà utilisée : ${revealedLetters.join(" ")}`);
+        }
+
+        guessedLetters.add(guess);
+
+        if (secretWord.includes(guess)) {
+            for (let i = 0; i < secretWord.length; i++) {
+                if (secretWord[i] === guess) revealedLetters[i] = guess;
+            }
+        } else {
+            attemptsLeft--;
+        }
     }
 
     if (!revealedLetters.includes("_")) {
         let wordFound = secretWord;
         resetGame();
-        return res.send(`🎉 Bravo ! Le mot était **${wordFound}**. Un nouveau mot a été choisi.`);
+        return res.send(`🎉 Bravo <@${user}> ! Le mot était **${wordFound}**. Un nouveau mot a été choisi.`);
     }
 
     if (attemptsLeft === 0) {
