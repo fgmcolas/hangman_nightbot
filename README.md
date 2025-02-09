@@ -12,7 +12,7 @@ This project is a simple API for playing a Hanged man game with words from the *
 
 ```sh
 git clone https://github.com/fgmcolas/hanged_man_nightbot.git
-cd hanged man-hearthstone
+cd hanged_man_nightbot
 npm install
 ```
 
