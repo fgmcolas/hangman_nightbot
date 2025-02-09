@@ -1,6 +1,6 @@
-# Hangman Game API - Hearthstone Edition
+# Hanged man Game API - Hearthstone Edition
 
-This project is a simple API for playing a Hangman game with words from the **Hearthstone** universe. Players guess letters, and the API responds with the current state of the word until it is fully guessed.
+This project is a simple API for playing a Hanged man game with words from the **Hearthstone** universe. Players guess letters, and the API responds with the current state of the word until it is fully guessed.
 
 ## Features
 - Randomly selects a word from a Hearthstone-themed word list.
@@ -12,7 +12,7 @@ This project is a simple API for playing a Hangman game with words from the **He
 
 ```sh
 git clone https://github.com/fgmcolas/hanged_man_nightbot.git
-cd hangman-hearthstone
+cd hanged_man_nightbot
 npm install
 ```
 
@@ -27,7 +27,7 @@ API Endpoints
 GET /
 
 Returns a simple message indicating the API is online.
-GET /hangman?letter={your_guess}
+GET /pendu?letter={your_guess}
 
 - If the letter is correct, updates the word progress.
 - If the letter is incorrect, reduces the remaining attempts.
@@ -45,6 +45,6 @@ To integrate this API with Nightbot, create a custom command with the following 
 !addcom !pendu $(urlfetch https://hanged-man-nightbot.onrender.com/pendu?letter=$(query))
 ```
 
-Players can guess letters using !hangman <letter> in chat.
+Players can guess letters using !pendu <letter> in chat.
 
 Enjoy the game! 🎮🔥
