@@ -36,9 +36,7 @@ app.get("/pendu", (req, res) => {
         if (!/[a-z]/.test(guess) || guessedLetters.has(guess)) {
             return res.send(`🔄 Lettre invalide ou déjà utilisée : ${revealedLetters.join(" ")}`);
         }
-
         guessedLetters.add(guess);
-
         if (secretWord.includes(guess)) {
             for (let i = 0; i < secretWord.length; i++) {
                 if (secretWord[i] === guess) revealedLetters[i] = guess;
@@ -59,7 +57,6 @@ app.get("/pendu", (req, res) => {
         resetGame();
         return res.send(`💀 Perdu ! Le mot était **${lostWord}**. Un nouveau mot a été choisi.`);
     }
-
     res.send(`✏️ ${revealedLetters.join(" ")} | ❤️ Vies restantes : ${attemptsLeft}`);
 });
 
