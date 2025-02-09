@@ -7,8 +7,8 @@ app.use(cors());
 const wordsData = require("./words.json");
 const words = wordsData.words;
 
-let secretWord = words[Math.floor(Math.random() * words.length)];
-let revealedLetters = Array(secretWord.length).fill("_");
+let secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
+let revealedLetters = Array(secretWord.length).fill("_").map(() => "_");
 let attemptsLeft = 6;
 let guessedLetters = new Set();
 
@@ -17,8 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/pendu", (req, res) => {
-    const guess = req.query.letter?.toLowerCase();
-    const user = req.query.user || "utilisateur";
+    const guess = req.query.letter?.toUpperCase();
 
     if (!guess) {
         return res.send("❌ Donne une lettre ou un mot valide !");
@@ -28,7 +27,7 @@ app.get("/pendu", (req, res) => {
         if (guess === secretWord) {
             let wordFound = secretWord;
             resetGame();
-            return res.send(`🎉 Bravo @${user} ! Le mot était **${wordFound}**. Un nouveau mot a été choisi.`);
+            return res.send(`🎉 Bravo ! Le mot était *${wordFound}*. Un nouveau mot a été choisi.`);
         } else {
             attemptsLeft--;
         }
@@ -49,13 +48,13 @@ app.get("/pendu", (req, res) => {
     if (!revealedLetters.includes("_")) {
         let wordFound = secretWord;
         resetGame();
-        return res.send(`🎉 Bravo @${user} ! Le mot était **${wordFound}**. Un nouveau mot a été choisi.`);
+        return res.send(`🎉 Bravo ! Le mot était *${wordFound}*. Un nouveau mot a été choisi.`);
     }
 
     if (attemptsLeft === 0) {
         let lostWord = secretWord;
         resetGame();
-        return res.send(`💀 Perdu ! Le mot était **${lostWord}**. Un nouveau mot a été choisi.`);
+        return res.send(`💀 Perdu ! Le mot était *${lostWord}*. Un nouveau mot a été choisi.`);
     }
     res.send(`✏️ ${revealedLetters.join(" ")} | ❤️ Vies restantes : ${attemptsLeft}`);
 });
