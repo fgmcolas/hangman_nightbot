@@ -24,12 +24,11 @@ app.get("/pendu", (req, res) => {
         return res.send("❌ Donne une lettre ou un mot valide !");
     }
 
-    // Vérifier si le joueur devine un mot entier
     if (guess.length > 1) {
         if (guess === secretWord) {
             let wordFound = secretWord;
             resetGame();
-            return res.send(`🎉 Bravo <@${user}> ! Le mot était **${wordFound}**. Un nouveau mot a été choisi.`);
+            return res.send(`🎉 Bravo @${user} ! Le mot était **${wordFound}**. Un nouveau mot a été choisi.`);
         } else {
             attemptsLeft--;
         }
@@ -52,7 +51,7 @@ app.get("/pendu", (req, res) => {
     if (!revealedLetters.includes("_")) {
         let wordFound = secretWord;
         resetGame();
-        return res.send(`🎉 Bravo <@${user}> ! Le mot était **${wordFound}**. Un nouveau mot a été choisi.`);
+        return res.send(`🎉 Bravo @${user} ! Le mot était **${wordFound}**. Un nouveau mot a été choisi.`);
     }
 
     if (attemptsLeft === 0) {
