@@ -8,7 +8,10 @@ const wordsData = require("./words.json");
 const words = wordsData.words;
 
 let secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
-let revealedLetters = Array(secretWord.length).fill("_").map(() => "_");
+let revealedLetters = secretWord.split("").map(char =>
+    (char === "'" || char === "-") ? char : "_"
+);
+
 let attemptsLeft = 6;
 let guessedLetters = new Set();
 
@@ -18,7 +21,6 @@ app.get("/", (req, res) => {
 
 app.get("/pendu", (req, res) => {
     const guess = req.query.letter?.toUpperCase();
-    const user = req.query.user || "utilisateur";
 
     if (!guess) {
         return res.send("❌ Donne une lettre ou un mot valide !");
@@ -62,7 +64,9 @@ app.get("/pendu", (req, res) => {
 
 function resetGame() {
     secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
-    revealedLetters = Array(secretWord.length).fill("_");
+    revealedLetters = secretWord.split("").map(char =>
+        (char === "'" || char === "-") ? char : "_"
+    );
     attemptsLeft = 6;
     guessedLetters.clear();
 }
