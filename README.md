@@ -1,4 +1,4 @@
-# Hangman Game API - Hearthstone Edition
+# Hanged man Game API - Hearthstone Edition
 
 This project is a simple API for playing a Hangman game with words from the **Hearthstone** universe. Players guess letters, and the API responds with the current state of the word until it is fully guessed.
 
