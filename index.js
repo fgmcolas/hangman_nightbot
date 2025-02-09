@@ -9,7 +9,7 @@ const words = wordsData.words;
 
 let secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
 let revealedLetters = secretWord.split("").map(char =>
-    (char === " ") ? "&nbsp;&nbsp;&nbsp;" : (char === "'" || char === "-") ? char : "_"
+    (char === " " || char === "'" || char === "-") ? char : "_"
 );
 
 let attemptsLeft = 6;
@@ -36,7 +36,7 @@ app.get("/pendu", (req, res) => {
         }
     } else {
         if (!/[A-Z]/.test(guess) || guessedLetters.has(guess)) {
-            return res.send(`🔄 Lettre invalide ou déjà utilisée : ${revealedLetters.join(" ")}`);
+            return res.send(`🔄 Lettre invalide ou déjà utilisée : ${revealedLetters.join("")}`);
         }
         guessedLetters.add(guess);
         if (secretWord.includes(guess)) {
@@ -59,13 +59,13 @@ app.get("/pendu", (req, res) => {
         resetGame();
         return res.send(`💀 Perdu ! Le mot était *${lostWord}*. Un nouveau mot a été choisi.`);
     }
-    res.send(`✏️ ${revealedLetters.join(" ")} | ❤️ Vies restantes : ${attemptsLeft}`);
+    res.send(`✏️ ${revealedLetters.join("")} | ❤️ Vies restantes : ${attemptsLeft}`);
 });
 
 function resetGame() {
     secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
     revealedLetters = secretWord.split("").map(char =>
-        (char === " ") ? "&nbsp;&nbsp;&nbsp;" : (char === "'" || char === "-") ? char : "_"
+        (char === " " || char === "'" || char === "-") ? char : "_"
     );
     attemptsLeft = 6;
     guessedLetters.clear();
