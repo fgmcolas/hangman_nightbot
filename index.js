@@ -8,9 +8,9 @@ const wordsData = require("./words.json");
 const words = wordsData.words;
 
 let secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
-let revealedLetters = secretWord.split("").map(char =>
-    (char === " " || char === "'" || char === "-") ? char : "_"
-);
+let revealedLetters = secretWord.split(" ").map(word =>
+    word.split("").map(char => (char === "'" || char === "-") ? char : "_").join(" ")
+).join(" ⠀ ");
 
 let attemptsLeft = 6;
 let guessedLetters = new Set();
@@ -36,16 +36,12 @@ app.get("/pendu", (req, res) => {
         }
     } else {
         if (!/[A-Z]/.test(guess) || guessedLetters.has(guess)) {
-            return res.send(`🔄 Lettre invalide ou déjà utilisée : ${revealedLetters.join("")}`);
+            return res.send(`🔄 Lettre invalide ou déjà utilisée : ${revealedLetters}`);
         }
         guessedLetters.add(guess);
-        if (secretWord.includes(guess)) {
-            for (let i = 0; i < secretWord.length; i++) {
-                if (secretWord[i] === guess) revealedLetters[i] = guess;
-            }
-        } else {
-            attemptsLeft--;
-        }
+        revealedLetters = secretWord.split(" ").map(word =>
+            word.split("").map(char => guessedLetters.has(char) || char === "'" || char === "-" ? char : "_").join(" ")
+        ).join(" ⠀ ");
     }
 
     if (!revealedLetters.includes("_")) {
@@ -59,14 +55,14 @@ app.get("/pendu", (req, res) => {
         resetGame();
         return res.send(`💀 Perdu ! Le mot était *${lostWord}*. Un nouveau mot a été choisi.`);
     }
-    res.send(`✏️ ${revealedLetters.join("")} | ❤️ Vies restantes : ${attemptsLeft}`);
+    res.send(`✏️ ${revealedLetters} | ❤️ Vies restantes : ${attemptsLeft}`);
 });
 
 function resetGame() {
     secretWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
-    revealedLetters = secretWord.split("").map(char =>
-        (char === " " || char === "'" || char === "-") ? char : "_"
-    );
+    revealedLetters = secretWord.split(" ").map(word =>
+        word.split("").map(char => (char === "'" || char === "-") ? char : "_").join(" ")
+    ).join(" ⠀ ");
     attemptsLeft = 6;
     guessedLetters.clear();
 }
