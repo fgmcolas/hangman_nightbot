@@ -39,6 +39,9 @@ app.get("/pendu", (req, res) => {
             return res.send(`🔄 Lettre invalide ou déjà utilisée : ${revealedLetters}`);
         }
         guessedLetters.add(guess);
+        if (!secretWord.includes(guess)) {
+            attemptsLeft--;
+        }
         revealedLetters = secretWord.split(" ").map(word =>
             word.split("").map(char => guessedLetters.has(char) || char === "'" || char === "-" ? char : "_").join(" ")
         ).join(" ⠀ ");
